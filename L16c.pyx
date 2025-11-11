@@ -5,7 +5,7 @@ def _L16tl_level1(dict data, str text, list sb_list, str txend, int lword):
 	cdef int osbm = 0
 	cdef int lw = 0
 	cdef str i
-	cdef int n, old_a
+	cdef int n
 
 	for i in text:
 		if osb == i:
@@ -48,7 +48,7 @@ def _L16tl_level2(dict data, str text, list sb_list, str txend, int lword):
 	cdef int osbm = 0
 	cdef int lw = 0
 	cdef str i
-	cdef int n, old_a
+	cdef int n
 
 	for i in text:
 		if osb == i:
@@ -96,7 +96,7 @@ def _L16tl_level3(dict data, str text, list sb_list, str txend, int lword):
 	cdef int osbm = 0
 	cdef int lw = 0
 	cdef str i
-	cdef int n, old_a
+	cdef int n
 
 	for i in text:
 		if osb == i:
@@ -150,7 +150,7 @@ def _L16t(dict data, str text, list sb_list, str txend):
 	cdef int osbm = 0
 	cdef int lw = 0
 	cdef str i
-	cdef int n, old_a
+	cdef int n
 
 	for i in text + txend:
 		if osb == i:
@@ -187,7 +187,7 @@ def _L16tlu_level1(dict data, str text, list sb_list, str txend, int lword):
 	cdef int osbm = 0
 	cdef int lw = 0
 	cdef str i
-	cdef int n, old_a
+	cdef int n
 
 	for i in text:
 		if osb == i:
@@ -227,7 +227,7 @@ def _L16tlu_level2(dict data, str text, list sb_list, str txend, int lword):
 	cdef int osbm = 0
 	cdef int lw = 0
 	cdef str i
-	cdef int n, old_a
+	cdef int n
 
 	for i in text:
 		if osb == i:
@@ -272,7 +272,7 @@ def _L16tlu_level3(dict data, str text, list sb_list, str txend, int lword):
 	cdef int osbm = 0
 	cdef int lw = 0
 	cdef str i
-	cdef int n, old_a
+	cdef int n
 
 	for i in text:
 		if osb == i:
@@ -323,7 +323,7 @@ def _L16tu(dict data, str text, list sb_list, str txend):
 	cdef int osbm = 0
 	cdef int lw = 0
 	cdef str i
-	cdef int n, old_a
+	cdef int n
 
 	for i in text + txend:
 		if osb == i:
@@ -356,12 +356,12 @@ def L16(str text, list sb_list, str txend="\n", int lword=6, str profile="None",
 	
 	if dtobj is None: data = {}
 	else: data = dtobj
-	if   profile == "tl1": _L16tl_level1(data, text, sb_list, txend, lword)
-	elif profile == "tl2": _L16tl_level2(data, text, sb_list, txend, lword)
-	elif profile == "tl3": _L16tl_level3(data, text, sb_list, txend, lword)
-	elif profile == "t": _L16t(data, text, sb_list, txend)
-	elif profile == "tlu1": _L16tlu_level1(data, text, sb_list, txend, lword)
-	elif profile == "tlu2": _L16tlu_level2(data, text, sb_list, txend, lword)
-	elif profile == "tlu3": _L16tlu_level3(data, text, sb_list, txend, lword)
-	elif profile == "tu": _L16tu(data, text, sb_list, txend)
+	if   profile == "tl1": return _L16tl_level1(data, text, sb_list, txend, lword)
+	elif profile == "tl2": return _L16tl_level2(data, text, sb_list, txend, lword)
+	elif profile == "tl3": return _L16tl_level3(data, text, sb_list, txend, lword)
+	elif profile == "t": return _L16t(data, text, sb_list, txend)
+	elif profile == "tlu1": return _L16tlu_level1(data, text, sb_list, txend, lword)
+	elif profile == "tlu2": return _L16tlu_level2(data, text, sb_list, txend, lword)
+	elif profile == "tlu3": return _L16tlu_level3(data, text, sb_list, txend, lword)
+	elif profile == "tu": return _L16tu(data, text, sb_list, txend)
 	else: print(f"profile: {profile}")
