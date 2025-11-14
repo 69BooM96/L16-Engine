@@ -1,5 +1,5 @@
 # L16-Engine
-# L16 - Morphological Tokenizer
+## L16 - Morphological Tokenizer
 
 L16 is a highly effective tokenizer based on the morphological analysis of languages. It is designed to break down text into meaningful units (tokens), taking into account the morphological structure of words, such as suffixes, prefixes, and endings. This makes it particularly useful for working with morphologically rich languages.
 
