@@ -5,7 +5,6 @@ def _L16tl_level1(dict data, str text, list sb_list, str txend, int lword):
 	cdef int osbm = 0
 	cdef int lw = 0
 	cdef str i
-	cdef int n
 
 	for i in text:
 		if osb == i:
@@ -15,7 +14,6 @@ def _L16tl_level1(dict data, str text, list sb_list, str txend, int lword):
 		else:
 			if i not in sb_list:
 				if osbm > 1: 
-					word += osb
 					if word not in data: data[word] = 1
 					else: data[word] = data[word] + 1
 					word = ""
@@ -48,7 +46,6 @@ def _L16tl_level2(dict data, str text, list sb_list, str txend, int lword):
 	cdef int osbm = 0
 	cdef int lw = 0
 	cdef str i
-	cdef int n
 
 	for i in text:
 		if osb == i:
@@ -58,7 +55,6 @@ def _L16tl_level2(dict data, str text, list sb_list, str txend, int lword):
 		else:
 			if i not in sb_list:
 				if osbm > 1: 
-					word += osb
 					if word not in data: data[word] = 1
 					else: data[word] = data[word] + 1
 					word = ""
@@ -96,7 +92,6 @@ def _L16tl_level3(dict data, str text, list sb_list, str txend, int lword):
 	cdef int osbm = 0
 	cdef int lw = 0
 	cdef str i
-	cdef int n
 
 	for i in text:
 		if osb == i:
@@ -106,7 +101,6 @@ def _L16tl_level3(dict data, str text, list sb_list, str txend, int lword):
 		else:
 			if i not in sb_list:
 				if osbm > 1: 
-					word += osb
 					if word not in data: data[word] = 1
 					else: data[word] = data[word] + 1
 					word = ""
@@ -150,7 +144,6 @@ def _L16t(dict data, str text, list sb_list, str txend):
 	cdef int osbm = 0
 	cdef int lw = 0
 	cdef str i
-	cdef int n
 
 	for i in text + txend:
 		if osb == i:
@@ -159,8 +152,7 @@ def _L16t(dict data, str text, list sb_list, str txend):
 			osbm += 1
 		else:
 			if i not in sb_list:
-				if osbm > 1: 
-					word += osb
+				if osbm > 1:
 					if word not in data: data[word] = 1
 					else: data[word] = data[word] + 1
 					word = ""
@@ -187,7 +179,6 @@ def _L16tlu_level1(dict data, str text, list sb_list, str txend, int lword):
 	cdef int osbm = 0
 	cdef int lw = 0
 	cdef str i
-	cdef int n
 
 	for i in text:
 		if osb == i:
@@ -196,8 +187,7 @@ def _L16tlu_level1(dict data, str text, list sb_list, str txend, int lword):
 			osbm += 1
 		else:
 			if i not in sb_list:
-				if osbm > 1: 
-					word += osb
+				if osbm > 1:
 					if word in data: data[word] = data[word] + 1
 					word = ""
 					lw = 0
@@ -227,7 +217,6 @@ def _L16tlu_level2(dict data, str text, list sb_list, str txend, int lword):
 	cdef int osbm = 0
 	cdef int lw = 0
 	cdef str i
-	cdef int n
 
 	for i in text:
 		if osb == i:
@@ -236,8 +225,7 @@ def _L16tlu_level2(dict data, str text, list sb_list, str txend, int lword):
 			osbm += 1
 		else:
 			if i not in sb_list:
-				if osbm > 1: 
-					word += osb
+				if osbm > 1:
 					if word in data: data[word] = data[word] + 1
 					word = ""
 					lw = 0
@@ -272,7 +260,6 @@ def _L16tlu_level3(dict data, str text, list sb_list, str txend, int lword):
 	cdef int osbm = 0
 	cdef int lw = 0
 	cdef str i
-	cdef int n
 
 	for i in text:
 		if osb == i:
@@ -281,8 +268,7 @@ def _L16tlu_level3(dict data, str text, list sb_list, str txend, int lword):
 			osbm += 1
 		else:
 			if i not in sb_list:
-				if osbm > 1: 
-					word += osb
+				if osbm > 1:
 					if word in data: data[word] = data[word] + 1
 					word = ""
 					lw = 0
@@ -323,7 +309,6 @@ def _L16tu(dict data, str text, list sb_list, str txend):
 	cdef int osbm = 0
 	cdef int lw = 0
 	cdef str i
-	cdef int n
 
 	for i in text + txend:
 		if osb == i:
@@ -332,8 +317,7 @@ def _L16tu(dict data, str text, list sb_list, str txend):
 			osbm += 1
 		else:
 			if i not in sb_list:
-				if osbm > 1: 
-					word += osb
+				if osbm > 1:
 					if word in data: data[word] = data[word] + 1
 					word = ""
 					lw = 0
@@ -351,7 +335,7 @@ def _L16tu(dict data, str text, list sb_list, str txend):
 	data.pop("", None)
 	return data
 
-def L16(str text, list sb_list, str txend="\n", int lword=6, str profile="None", object dtobj=None):
+def L16(str text, list sb_list, str txend="\n", int lword=6, str profile="t", object dtobj=None):
 	cdef dict data
 	
 	if dtobj is None: data = {}
@@ -364,4 +348,4 @@ def L16(str text, list sb_list, str txend="\n", int lword=6, str profile="None",
 	elif profile == "tlu2": return _L16tlu_level2(data, text, sb_list, txend, lword)
 	elif profile == "tlu3": return _L16tlu_level3(data, text, sb_list, txend, lword)
 	elif profile == "tu": return _L16tu(data, text, sb_list, txend)
-	else: print(f"profile: {profile}")
+	else: print(f"not profile: {profile}")
