@@ -335,7 +335,7 @@ def _L16tu(dict data, str text, list sb_list, str txend):
 	data.pop("", None)
 	return data
 
-def _L16c(dict data, int lword, int lvl):
+def _L16compression(dict data, int lword, int lvl):
 	cdef dict res = {}
 
 	for i in data:
@@ -344,22 +344,33 @@ def _L16c(dict data, int lword, int lvl):
 		if i in res: res[i] = res[i] + data[i]
 		else:
 			new_tk = False
-			if lw > lword:
-				for num in range(1, lvl+1):
-					if lw-num > lword:
-						if i[:-num] in data: 
-							res[i[:-num]] = res.get(i[:-num], 0) + data[i]
-							new_tk = True
-						elif i[num:] in data: 
-							res[i[num:]] = res.get(i[num:], 0) + data[i]
-							new_tk = True
-						elif i[num:-num] in data: 
-							res[i[num:-num]] = res.get(i[num:-num], 0) + data[i]
-							new_tk = True
-					else: break
-				if not new_tk: res[i] = data[i]
+			for num in range(1, lvl+1):
+				if lw-num > lword:
+					if i[:-num] in data: 
+						res[i[:-num]] = res.get(i[:-num], 0) + data[i]
+						new_tk = True
+					elif i[num:] in data: 
+						res[i[num:]] = res.get(i[num:], 0) + data[i]
+						new_tk = True
+					elif i[num:-num] in data: 
+						res[i[num:-num]] = res.get(i[num:-num], 0) + data[i]
+						new_tk = True
+				else: break
+			if not new_tk: res[i] = data[i]
 	return res
 
+def _L16clear(dict data, list sb_list):
+	cdef dict res = {}
+
+	for i in data:
+		dt = data[i]
+		for sb in sb_list:
+			i = i.replace(sb, "")
+
+		if i in res: res[i] = res[i]+dt
+		else: res[i] = dt
+
+	return res
 
 PROFILES = {
 	"t": _L16t,
@@ -370,7 +381,8 @@ PROFILES = {
 	"tlu1": _L16tlu_level1,
 	"tlu2": _L16tlu_level2,
 	"tlu3": _L16tlu_level3,
-	"c": _L16c
+	"c": _L16compression,
+	"clear": _L16clear
 }
 
 def L16(str text=None, list sb_list=None, str txend="\n", int lword=6, str profile="None", object dtobj=None, int lvl=4):
@@ -389,6 +401,9 @@ def L16(str text=None, list sb_list=None, str txend="\n", int lword=6, str profi
 
 	elif profile in ["t", "tu"]:
 		return handler(data, text, sb_list, txend)
-		
+
+	elif profile == "clear":
+		return handler(data, sb_list)
+
 	else:
 		return handler(data, text, sb_list, txend, lword)
