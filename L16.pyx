@@ -360,18 +360,35 @@ def _L16c(dict data, int lword, int lvl):
 				if not new_tk: res[i] = data[i]
 	return res
 
+
+PROFILES = {
+	"t": _L16t,
+	"tu": _L16tu,
+	"tl1": _L16tl_level1,
+	"tl2": _L16tl_level2,
+	"tl3": _L16tl_level3,
+	"tlu1": _L16tlu_level1,
+	"tlu2": _L16tlu_level2,
+	"tlu3": _L16tlu_level3,
+	"c": _L16c
+}
+
 def L16(str text=None, list sb_list=None, str txend="\n", int lword=6, str profile="None", object dtobj=None, int lvl=4):
 	cdef dict data
 	
 	if dtobj is None: data = {}
 	else: data = dtobj
-	if   profile == "tl1": return _L16tl_level1(data, text, sb_list, txend, lword)
-	elif profile == "tl2": return _L16tl_level2(data, text, sb_list, txend, lword)
-	elif profile == "tl3": return _L16tl_level3(data, text, sb_list, txend, lword)
-	elif profile == "t": return _L16t(data, text, sb_list, txend)
-	elif profile == "tlu1": return _L16tlu_level1(data, text, sb_list, txend, lword)
-	elif profile == "tlu2": return _L16tlu_level2(data, text, sb_list, txend, lword)
-	elif profile == "tlu3": return _L16tlu_level3(data, text, sb_list, txend, lword)
-	elif profile == "tu": return _L16tu(data, text, sb_list, txend)
-	elif profile == "c": return _L16c(data, lword, lvl)
-	else: print(f"not profile: {profile}")
+
+	handler = PROFILES.get(profile)
+
+	if not handler:
+		raise ValueError(f"Unknown or unsupported profile: {profile}")
+
+	if profile == 'c':
+		return handler(data, lword, lvl)
+
+	elif profile in ["t", "tu"]:
+		return handler(data, text, sb_list, txend)
+		
+	else:
+		return handler(data, text, sb_list, txend, lword)
