@@ -335,7 +335,32 @@ def _L16tu(dict data, str text, list sb_list, str txend):
 	data.pop("", None)
 	return data
 
-def L16(str text, list sb_list, str txend="\n", int lword=6, str profile="t", object dtobj=None):
+def _L16c(dict data, int lword, int lvl):
+	cdef dict res = {}
+
+	for i in data:
+		lw = len(i)
+
+		if i in res: res[i] = res[i] + data[i]
+		else:
+			new_tk = False
+			if lw > lword:
+				for num in range(1, lvl+1):
+					if lw-num > lword:
+						if i[:-num] in data: 
+							res[i[:-num]] = res.get(i[:-num], 0) + data[i]
+							new_tk = True
+						elif i[num:] in data: 
+							res[i[num:]] = res.get(i[num:], 0) + data[i]
+							new_tk = True
+						elif i[num:-num] in data: 
+							res[i[num:-num]] = res.get(i[num:-num], 0) + data[i]
+							new_tk = True
+					else: break
+				if not new_tk: res[i] = data[i]
+	return res
+
+def L16(str text=None, list sb_list=None, str txend="\n", int lword=6, str profile="None", object dtobj=None, int lvl=4):
 	cdef dict data
 	
 	if dtobj is None: data = {}
@@ -348,4 +373,5 @@ def L16(str text, list sb_list, str txend="\n", int lword=6, str profile="t", ob
 	elif profile == "tlu2": return _L16tlu_level2(data, text, sb_list, txend, lword)
 	elif profile == "tlu3": return _L16tlu_level3(data, text, sb_list, txend, lword)
 	elif profile == "tu": return _L16tu(data, text, sb_list, txend)
+	elif profile == "c": return _L16c(data, lword, lvl)
 	else: print(f"not profile: {profile}")
